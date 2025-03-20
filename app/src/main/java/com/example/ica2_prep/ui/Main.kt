@@ -1,6 +1,7 @@
 package com.example.ica2_prep.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.ica2_prep.data.AppViewModel
+import com.example.ica2_prep.ui.theme.ICA2_PrepTheme
 import com.example.ica2_prep.utils.RequestNotificationPermission
 
 @Composable
@@ -19,15 +21,15 @@ fun MainScreen(viewModel: AppViewModel, navController: NavController) {
 
     RequestNotificationPermission { } // Insert code to be run after permission is granted
 
-    MaterialTheme(colorScheme = if (viewModel.isDarkTheme) darkColorScheme() else lightColorScheme()) {
+    // For controllable dark theme
+    // MaterialTheme(colorScheme = if (viewModel.isDarkTheme) darkColorScheme() else lightColorScheme()) {
+    ICA2_PrepTheme {
         Scaffold(
-            modifier = Modifier,
-
             topBar = {},
 
             floatingActionButton = {},
 
-            content = { innerPadding -> Column(Modifier.padding(innerPadding)) { } }
+            content = { innerPadding -> Column(Modifier.fillMaxSize().padding(innerPadding)) {} }
         )
     }
 }

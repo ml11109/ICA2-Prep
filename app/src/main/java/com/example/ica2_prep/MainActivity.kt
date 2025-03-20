@@ -31,6 +31,14 @@ class MainActivity : ComponentActivity() {
         val viewModel: AppViewModel = viewModel()
         val navController = rememberNavController()
 
+        /*
+        // To navigate to new activity
+        navController.navigate("main")
+
+        // With data
+        navController.navigate("chapter/$index")
+         */
+
         NavHost(navController, startDestination = "splash") { // Change to "onboarding" or "main" as needed
             composable("splash") { SplashScreen(navController) }
             composable("onboarding") { OnboardingScreen(navController) }
@@ -43,11 +51,5 @@ class MainActivity : ComponentActivity() {
             }
              */
         }
-    }
-
-    companion object {
-        lateinit var chapterImageIds: IntArray
-        lateinit var chapterTitles: Array<String>
-        lateinit var chapterSummaries: Array<String>
     }
 }
