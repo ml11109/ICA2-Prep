@@ -18,18 +18,18 @@ import java.util.Locale
 /*
 SpeechRecognizer that records continuously instead of stopping when user stops speaking
 
-In manifest:
+// In manifest
 <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-In <application> in manifest:
+// In <application> in manifest
 <service
     android:name="android.speech.RecognitionService"
     android:permission="android.permission.BIND_SPEECH_RECOGNITION_SERVICE" />
 
-In main screen:
+// At start of main screen
 var audioPermissionGranted by remember { mutableStateOf(false) }
 SpeechRecognizerManager.RequestAudioPermission { audioPermissionGranted = true }
 
-To create:
+// To create
 val speechRecognizerManager = remember {
     SpeechRecognizerManager(
         context = context,
@@ -41,10 +41,10 @@ val speechRecognizerManager = remember {
     )
 }
 
-To start:
+// To start
 speechRecognizerManager.startListening()
 
-To stop:
+// To stop
 speechRecognizerManager.stopListening()
  */
 

@@ -1,6 +1,3 @@
 <resources>
     <string name="app_name">ICA2_Prep</string>
-
-    <string name="channel_id">channel_id</string>
-    <string name="group_key">group_key</string>
 </resources>

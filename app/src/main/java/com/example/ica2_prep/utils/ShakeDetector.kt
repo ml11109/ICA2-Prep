@@ -8,14 +8,13 @@ import android.hardware.SensorManager
 import kotlin.math.sqrt
 
 /*
-In manifest:
+// In manifest
 <uses-permission android:name="android.permission.BODY_SENSORS"/>
 
-To implement:
+// At start of composable
 val shakeDetector = remember { ShakeDetector(context) {
     // Handle shake event
 } }
-
 DisposableEffect(Unit) {
     shakeDetector.startListening()
     onDispose { shakeDetector.stopListening() }

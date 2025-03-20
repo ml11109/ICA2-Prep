@@ -16,22 +16,31 @@ import androidx.core.content.ContextCompat
 import com.example.ica2_prep.R
 
 /*
-In manifest:
+// In manifest
 <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
-In strings.xml:
-<string name="group_key">group_key</string>
-<string name="channel_id">channel_id</string>
-
-In drawable:
+// In res/drawable
 replace notification_icon.png with suitable image
+
+// In MainActivity.onCreate()
+createNotificationChannel(this)
+
+// At start of main screen
+RequestNotificationPermission {} // Insert code to be run when permission is granted
+
+// For bundled notification, call showNotification() multiple times with incrementing id
+// Otherwise just use 0 for id
+messages.forEachIndexed { index, message ->
+ showNotification(context, index, "Message $index", message)
+}
  */
 
-fun createNotificationChannel(context: Context) {
-    // To be called in MainActivity.onCreate()
+const val groupKey = "group_key"
+const val channelId = "channel_id"
 
+fun createNotificationChannel(context: Context) {
     val channel = NotificationChannel(
-        context.getString(R.string.channel_id),
+        channelId,
         "General Notifications",
         NotificationManager.IMPORTANCE_DEFAULT
     ).apply {
@@ -44,9 +53,6 @@ fun createNotificationChannel(context: Context) {
 
 @Composable
 fun RequestNotificationPermission(onPermissionGranted: () -> Unit) {
-    // To be called at start of main screen
-    // Eg: RequestNotificationPermission { isNotificationsEnabled = true }
-
     val context = LocalContext.current
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -67,18 +73,11 @@ fun RequestNotificationPermission(onPermissionGranted: () -> Unit) {
 }
 
 fun showNotification(context: Context, id: Int, title: String, message: String) {
-    // Call multiple times with incrementing id to show multiple notifications
-    // Eg:
-    // messages.forEachIndexed { index, message ->
-    //     showNotification(context, index, "Message $index", message)
-    // }
-
     val notificationManager =
         ContextCompat.getSystemService(context, NotificationManager::class.java)
-    val groupKey = context.getString(R.string.group_key)
 
     // Individual Notification
-    val builder = NotificationCompat.Builder(context, context.getString(R.string.channel_id))
+    val builder = NotificationCompat.Builder(context, channelId)
         .setSmallIcon(R.drawable.notification_icon)
         .setContentTitle(title)
         .setContentText(message)
@@ -90,7 +89,7 @@ fun showNotification(context: Context, id: Int, title: String, message: String) 
 
     // Summary Notification (Shows only when multiple exist)
     val summaryBuilder =
-        NotificationCompat.Builder(context, context.getString(R.string.channel_id))
+        NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.notification_icon)
             .setContentTitle("You have new messages")
             .setStyle(

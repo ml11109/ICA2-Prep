@@ -17,19 +17,17 @@ import com.example.ica2_prep.utils.RequestNotificationPermission
 
 @Composable
 fun MainScreen(viewModel: AppViewModel, navController: NavController) {
-    val context = LocalContext.current
-
-    RequestNotificationPermission { } // Insert code to be run after permission is granted
+    // To get context
+    // val context = LocalContext.current
 
     // For controllable dark theme
     // MaterialTheme(colorScheme = if (viewModel.isDarkTheme) darkColorScheme() else lightColorScheme()) {
     ICA2_PrepTheme {
         Scaffold(
             topBar = {},
-
             floatingActionButton = {},
-
-            content = { innerPadding -> Column(Modifier.fillMaxSize().padding(innerPadding)) {} }
-        )
+        ) { innerPadding -> innerPadding
+            // Insert app content
+        }
     }
 }

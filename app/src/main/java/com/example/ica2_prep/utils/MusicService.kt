@@ -11,25 +11,24 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.ica2_prep.R
 
+/*
+// In manifest
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+// In <application> in manifest
+<service android:name=".utils.MusicService" android:foregroundServiceType="mediaPlayback"/>
+
+// In res/raw
+replace song.mp3 with suitable song
+
+// To start
+context.startService(Intent(context, MusicService::class.java).apply { action = "START" })
+
+// To stop
+context.stopService(Intent(context, MusicService::class.java).apply { action = "STOP" })
+ */
+
 class MusicService : Service() {
-    /*
-    In manifest:
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
-
-    In <application> in manifest:
-    <service android:name=".utils.MusicService" android:foregroundServiceType="mediaPlayback"/>
-
-    In raw:
-    replace song.mp3 with suitable song
-
-    To start:
-    context.startService(Intent(context, MusicService::class.java).apply { action = "START" })
-
-    To stop:
-    context.stopService(Intent(context, MusicService::class.java).apply { action = "STOP" })
-     */
-
     private lateinit var player: MediaPlayer
 
     override fun onBind(intent: Intent?): IBinder? {

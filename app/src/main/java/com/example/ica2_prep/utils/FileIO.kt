@@ -105,7 +105,7 @@ fun getTextFromUri(context: Context, uri: Uri): String {
 // PDFs
 
 /*
-In <application> in manifest:
+// In <application> in manifest
 <provider
     android:name="androidx.core.content.FileProvider"
     android:authorities="${applicationId}.provider"
@@ -116,11 +116,14 @@ In <application> in manifest:
         android:resource="@xml/filepaths" />
 </provider>
 
-In filepaths.xml in res/xml:
+// In filepaths.xml in res/xml
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <files-path name="pdfs" path="pdfs/" />
 </paths>
+
+// To open PDF
+openPdf(context, "example.pdf", R.raw.example)
 */
 
 fun getPdfUri(context: Context, fileName: String, resourceId: Int): Uri {

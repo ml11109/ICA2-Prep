@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,20 +13,16 @@ import com.example.ica2_prep.data.AppViewModel
 import com.example.ica2_prep.ui.MainScreen
 import com.example.ica2_prep.ui.OnboardingScreen
 import com.example.ica2_prep.ui.SplashScreen
-import com.example.ica2_prep.utils.createNotificationChannel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent { AppNavigation() }
-
-        createNotificationChannel(this)
     }
 
     @Composable
     fun AppNavigation() {
-        val context = LocalContext.current
         val viewModel: AppViewModel = viewModel()
         val navController = rememberNavController()
 
