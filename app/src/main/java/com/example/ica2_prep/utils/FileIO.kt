@@ -3,8 +3,12 @@ package com.example.ica2_prep.utils
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.core.content.FileProvider
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 
 // Text files
 
@@ -16,6 +20,85 @@ fun saveTextToFile(context: Context, filename: String, text: String) {
 fun readTextFromFile(context: Context, filename: String): String {
     val file = File(context.filesDir, filename)
     return if (file.exists()) file.readText() else "No saved text found"
+}
+
+fun deleteFile(context: Context, filename: String) {
+    val file = File(context.filesDir, filename)
+    if (file.exists()) file.delete()
+}
+
+/*
+// Launcher to save file with file picker
+
+val saveFileLauncher = rememberLauncherForActivityResult(
+    contract = ActivityResultContracts.CreateDocument("text/plain"),
+) { uri ->
+    if (uri != null) {
+        saveTextToUri(context, uri, viewModel.text)
+        statusMessage = "File saved"
+    } else {
+        statusMessage = "File save cancelled"
+    }
+}
+
+// To launch
+
+saveFileLauncher.launch(fileName)
+ */
+
+fun saveTextToUri(context: Context, uri: Uri, text: String) {
+    try {
+        context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+            OutputStreamWriter(outputStream).use { writer ->
+                writer.write(text)
+            }
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+
+/*
+// Launcher to open file with file picker
+
+val filePickerLauncher = rememberLauncherForActivityResult(
+    contract = ActivityResultContracts.OpenDocument(),
+) { uri ->
+    if (uri != null) {
+        fileUri = uri
+        fileName = getFileNameFromUri(context, uri)
+        fileContent = getTextFromUri(context, uri)
+        // Use fileName / fileContent as needed
+    }
+}
+
+// To launch
+
+filePickerLauncher.launch(arrayOf("text/plain"))
+ */
+
+fun getFileNameFromUri(context: Context, uri: Uri): String {
+    val cursor = context.contentResolver.query(uri, null, null, null, null)
+    val nameIndex = cursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME) ?: -1
+    val name = if (cursor != null && cursor.moveToFirst() && nameIndex >= 0) {
+        cursor.getString(nameIndex)
+    } else {
+        "Unknown File"
+    }
+    cursor?.close()
+    return name
+}
+
+fun getTextFromUri(context: Context, uri: Uri): String {
+    return try {
+        context.contentResolver.openInputStream(uri).use { inputStream ->
+            BufferedReader(InputStreamReader(inputStream)).use { reader ->
+                reader.readText()
+            }
+        }
+    } catch (e: Exception) {
+        "Error reading file"
+    }
 }
 
 
