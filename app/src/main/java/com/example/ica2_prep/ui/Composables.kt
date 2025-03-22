@@ -1,6 +1,7 @@
 package com.example.ica2_prep.ui
 
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import kotlin.math.round
 
 /*
 Contents:
@@ -44,18 +46,26 @@ fun RatingBar(
     size: Dp = 24.dp,
     color: Color = MaterialTheme.colorScheme.primary,
     isEditable: Boolean = false,
-    onStarClick: (Float) -> Unit
+    onRatingChanged: (Float) -> Unit = {}
 ) {
     Row(
-        modifier = Modifier.pointerInput(Unit) {
-            if (isEditable) {
-                detectDragGestures { change, _ ->
-                    val temp = change.position.x / size.toPx()
-                    val newRating = (temp / step).toInt() * step
-                    onStarClick(newRating)
+        modifier = Modifier
+            .pointerInput(Unit) {
+                if (!isEditable) return@pointerInput
+                detectTapGestures { offset ->
+                    val temp = offset.x / size.toPx()
+                    val newRating = round(temp / step) * step
+                    onRatingChanged(newRating)
                 }
             }
-        }
+            .pointerInput(Unit) {
+                if (!isEditable) return@pointerInput
+                detectDragGestures { change, _ ->
+                    val temp = change.position.x / size.toPx()
+                    val newRating = round(temp / step) * step
+                    onRatingChanged(newRating)
+                }
+            }
     ) {
         for (i in 1..maxRating) {
             if (i <= rating.toInt()) {
