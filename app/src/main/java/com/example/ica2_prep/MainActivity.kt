@@ -36,25 +36,30 @@ class MainActivity : ComponentActivity() {
 
         /*
         // To navigate to new activity
-        navController.navigate("main")
+        navController.navigate("secondary")
 
-        // With data
-        navController.navigate("chapter/$index")
+        // To prevent returning
+        navController.navigate("secondary") {
+            popUpTo("main") { inclusive = true }
+        }
          */
 
-        NavHost(navController, startDestination = "splash") { // Change to "onboarding" or "main" as needed
+        NavHost(navController, startDestination = "main") { // Change to "splash" or "onboarding" as needed
             composable("splash") { SplashScreen(navController) }
             composable("onboarding") { OnboardingScreen(navController) }
             composable("main") { MainScreen(viewModel, navController) }
 
-            /* Eg for passing data into new activity
+            /*
+            // To pass data into new activity
             composable("chapter/{chapterNum}") { backStackEntry ->
                 val chapterNum = backStackEntry.arguments?.getString("chapterNum")
                 ChapterScreen(viewModel, chapterNum!!.toInt())
             }
+            // And to navigate, navController.navigate("chapter/$index")
              */
 
-            /* Eg for transitions
+            /*
+            // For transitions
             composable(
                 "secondary",
                 enterTransition = {
