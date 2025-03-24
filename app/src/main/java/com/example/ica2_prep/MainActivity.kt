@@ -16,8 +16,6 @@ import com.example.ica2_prep.ui.SplashScreen
 
 /*
 TODO:
-- Add composable templates
-- Email utils
 - More internal services
 - More transitions
  */

@@ -70,10 +70,6 @@ Contents:
 - PagerScreen
 - InputDialog
 - RatingBar
-
-Not added yet:
-- Android view
-- Canvas
  */
 
 
@@ -95,6 +91,8 @@ fun menuItems() {
     DropdownMenuItem(text = { Text("Item 2") }, onClick = { /* Handle click */ })
 }
 CollapsingToolbarScaffold("Title", showDropdownMenu = true, menuItems = { menuItems() })
+
+// Can also set showAppBar to false or pass in floatingActionButton
  */
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -106,6 +104,7 @@ fun CollapsingToolbarScaffold(
     navController: NavController? = null,
     showDropdownMenu: Boolean = false,
     menuItems: @Composable () -> Unit = {},
+    floatingActionButton: @Composable () -> Unit = {},
     content: @Composable (nestedScrollConnection: NestedScrollConnection) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -114,6 +113,8 @@ fun CollapsingToolbarScaffold(
     ICA2_PrepTheme {
         Scaffold(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
+
+            floatingActionButton = floatingActionButton,
 
             topBar = {
                 if (!showAppBar) return@Scaffold
@@ -184,6 +185,8 @@ fun menuItems() {
     DropdownMenuItem(text = { Text("Item 2") }, onClick = { /* Handle click */ })
 }
 ToolbarScaffold("Title", showDropdownMenu = true, menuItems = { menuItems() })
+
+// Can also set showAppBar to false or pass in floatingActionButton
  */
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -195,6 +198,7 @@ fun ToolbarScaffold(
     navController: NavController? = null,
     showDropdownMenu: Boolean = false,
     menuItems: @Composable () -> Unit = {},
+    floatingActionButton: @Composable () -> Unit = {},
     content: @Composable () -> Unit
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
@@ -202,6 +206,8 @@ fun ToolbarScaffold(
     ICA2_PrepTheme {
         Scaffold(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
+
+            floatingActionButton = floatingActionButton,
 
             topBar = {
                 if (!showAppBar) return@Scaffold
