@@ -7,4 +7,5 @@ import androidx.lifecycle.ViewModel
 
 class AppViewModel : ViewModel() {
     var isDarkTheme by mutableStateOf(false)
+    var sampleDataObject by mutableStateOf(SampleDataClass("Sample Name"))
 }

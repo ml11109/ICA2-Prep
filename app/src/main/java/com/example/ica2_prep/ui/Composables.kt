@@ -3,14 +3,25 @@ package com.example.ica2_prep.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -21,15 +32,20 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -43,18 +59,19 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.ica2_prep.data.AppViewModel
 import com.example.ica2_prep.ui.theme.ICA2_PrepTheme
 import kotlin.math.round
 
 /*
 Contents:
 - CollapsingToolbarScaffold and ToolbarScaffold
+- TabScreen
+- PagerScreen
 - InputDialog
 - RatingBar
 
 Not added yet:
-- Tab screen
-- View pager
 - Android view
 - Canvas
  */
@@ -239,7 +256,87 @@ fun ToolbarScaffold(
 
 
 /*
+// Screen with row of tabs above
+TabScreen(viewModel, navController)
+
+// Modify this function to add your own tabs
+ */
+
+@Composable
+fun TabScreen(viewModel: AppViewModel, navController: NavController) {
+    // Add tabs as needed
+    val tabs = arrayOf("Tab 1", "Tab 2", "Tab 3")
+    val tabIcons = listOf(Icons.AutoMirrored.Filled.List, Icons.Default.Info, Icons.Default.Person)
+    var tabIndex by remember { mutableIntStateOf(0) }
+
+    Column {
+        TabRow(tabIndex) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    text = { Text(title) },
+                    icon = { Icon(tabIcons[index], null) },
+                    selected = tabIndex == index,
+                    onClick = { tabIndex = index }
+                )
+            }
+        }
+
+        when (tabIndex) {
+            // Add screens as needed
+            0 -> MainScreen(viewModel, navController)
+            1 -> MainScreen(viewModel, navController)
+            2 -> MainScreen(viewModel, navController)
+        }
+    }
+}
+
+
+/*
+// HorizontalPager with indicator
+PagerScreen(arrayOf<@Composable (Any) -> Unit>(
+    { Page1() },
+    { Page2(navController) },
+    // Add more pages here
+))
+// And then define each page individually (see Onboarding.kt)
+ */
+
+@Composable
+fun PagerScreen(pages: Array<@Composable (Any) -> Unit>) {
+    val pagerState = rememberPagerState(pageCount = { pages.size })
+    HorizontalPager(state = pagerState) { pages[it] }
+    PageIndicator(pagerState)
+}
+
+@Composable
+fun PageIndicator(pagerState: PagerState) {
+    Box(Modifier.fillMaxSize()) {
+        Row(
+            Modifier
+                .wrapContentHeight()
+                .fillMaxWidth()
+                .padding(bottom = 64.dp)
+                .align(Alignment.BottomCenter),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            repeat(pagerState.pageCount) { iteration ->
+                val color = if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+                Box(
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .clip(CircleShape)
+                        .background(color)
+                        .size(16.dp)
+                )
+            }
+        }
+    }
+}
+
+
+/*
 // AlertDialog with TextField
+
 var showDialog by remember { mutableStateOf(false) }
 
 if (showDialog) {

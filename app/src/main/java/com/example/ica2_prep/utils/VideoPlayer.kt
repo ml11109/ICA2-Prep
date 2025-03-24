@@ -31,7 +31,7 @@ VideoViewPlayer(R.raw.video, Modifier.fillMaxWidth().aspectRatio(16f / 9f))
 // ExoVideoPlayer (more advanced UI)
 ExoVideoPlayer(R.raw.video, Modifier.fillMaxWidth().aspectRatio(16f / 9f))
 
-// PiP
+// PiP (make sure to hide the toolbar, if any)
 enterPipMode(context)
  */
 
