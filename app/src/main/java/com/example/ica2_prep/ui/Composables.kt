@@ -6,7 +6,6 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -27,7 +26,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,11 +48,13 @@ import kotlin.math.round
 
 /*
 Contents:
-- Text, button, image, box, column, row, grid, lazy column, lazy row, lazy grid
+- CollapsingToolbarScaffold and ToolbarScaffold
+- InputDialog
+- RatingBar
+
+Not added yet:
 - Tab screen
 - View pager
-- Toolbar
-- Rating bar
 - Android view
 - Canvas
  */
@@ -237,6 +237,7 @@ fun ToolbarScaffold(
     }
 }
 
+
 /*
 // AlertDialog with TextField
 var showDialog by remember { mutableStateOf(false) }
@@ -297,8 +298,12 @@ fun InputDialog(title: String, onValueSet: (String) -> Unit, onDismiss: () -> Un
 }
 
 
-// Rating bar
-// Eg. RatingBar(rating, isEditable = true) { rating = it }
+/*
+// Rating bar like the one in xml
+var rating by remember { mutableFloatStateOf(0f) }
+RatingBar(rating, isEditable = true) { rating = it } // Editable
+RatingBar(3.5f) // Non-editable
+ */
 
 @Composable
 fun RatingBar(

@@ -18,6 +18,8 @@ import com.example.ica2_prep.ui.SplashScreen
 TODO:
 - Add composable templates
 - Email utils
+- More internal services
+- More transitions
  */
 
 class MainActivity : ComponentActivity() {
@@ -49,6 +51,24 @@ class MainActivity : ComponentActivity() {
             composable("chapter/{chapterNum}") { backStackEntry ->
                 val chapterNum = backStackEntry.arguments?.getString("chapterNum")
                 ChapterScreen(viewModel, chapterNum!!.toInt())
+            }
+             */
+
+            /* Eg for transitions
+            composable(
+                "secondary",
+                enterTransition = {
+                    return@composable slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+                    )
+                },
+                exitTransition = {
+                    return@composable slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                    )
+                }
+            ) {
+                SecondaryScreen(viewModel, navController)
             }
              */
         }
