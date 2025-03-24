@@ -14,12 +14,6 @@ import com.example.ica2_prep.ui.MainScreen
 import com.example.ica2_prep.ui.OnboardingScreen
 import com.example.ica2_prep.ui.SplashScreen
 
-/*
-TODO:
-- More internal services
-- More transitions
- */
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

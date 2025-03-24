@@ -10,6 +10,14 @@ import java.io.File
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
+/*
+Contents:
+- Save/read text from file
+- Save/read file with file picker
+- Open PDFs
+ */
+
+
 // Text files
 
 fun saveTextToFile(context: Context, filename: String, text: String) {
