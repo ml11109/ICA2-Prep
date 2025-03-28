@@ -33,6 +33,14 @@ ExoVideoPlayer(R.raw.video, Modifier.fillMaxWidth().aspectRatio(16f / 9f))
 
 // PiP (make sure to hide the toolbar, if any)
 enterPipMode(context)
+
+// Detect PiP exit
+override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+    if (!isInPictureInPictureMode) {
+        // Handle exit from PiP mode
+    }
+    super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+}
  */
 
 @Composable
