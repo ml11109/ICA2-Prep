@@ -27,11 +27,11 @@ SpeechRecognizer that records continuously instead of stopping when user stops s
 
 // At start of main screen
 var audioPermissionGranted by remember { mutableStateOf(false) }
-SpeechRecognizerManager.RequestAudioPermission { audioPermissionGranted = true }
+ContinuousSpeechRecognizerManager.RequestAudioPermission { audioPermissionGranted = true }
 
 // To create
 val speechRecognizerManager = remember {
-    SpeechRecognizerManager(
+    ContinuousSpeechRecognizerManager(
         context = context,
         onStop = {
             isRunning = false
