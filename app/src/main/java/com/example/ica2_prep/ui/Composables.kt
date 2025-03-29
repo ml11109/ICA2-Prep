@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Density
@@ -269,36 +270,57 @@ fun ToolbarScaffold(
 
 /*
 // Screen with row of tabs above
-TabScreen(viewModel, navController)
-
-// Modify this function to add your own tabs
+TabScreen(
+    numTabs = 2,
+    tabTitles = listOf("Tab 1", "Tab 2"),
+    tabIcons = listOf(Icons.AutoMirrored.Filled.List, Icons.Default.Person)
+) { tabIndex ->
+    when (tabIndex) {
+        0 -> Tab1(viewModel, navController)
+        1 -> Tab2(viewModel, navController)
+        // Add more tabs here
+    }
+}
  */
 
 @Composable
-fun TabScreen(viewModel: AppViewModel, navController: NavController) {
-    // Add tabs as needed
-    val tabs = arrayOf("Tab 1", "Tab 2", "Tab 3")
-    val tabIcons = listOf(Icons.AutoMirrored.Filled.List, Icons.Default.Info, Icons.Default.Person)
+fun TabScreen(numTabs: Int, tabTitles: List<String> = emptyList(), tabIcons: List<ImageVector> = emptyList(), getTab: @Composable (Int) -> Unit) {
     var tabIndex by remember { mutableIntStateOf(0) }
+    val filledTabTitles = tabTitles + List((numTabs - tabTitles.size).coerceAtLeast(0)) { "Tab ${it + 1}" }
+    val filledTabIcons = tabIcons + List((numTabs - tabIcons.size).coerceAtLeast(0)) { Icons.Default.Info }
 
     Column {
         TabRow(tabIndex) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
-                    text = { Text(title) },
-                    icon = { Icon(tabIcons[index], null) },
-                    selected = tabIndex == index,
-                    onClick = { tabIndex = index }
-                )
+            for (index in 0 until numTabs) {
+                if (tabTitles.isEmpty() && tabIcons.isEmpty()) {
+                    Tab(
+                        selected = tabIndex == index,
+                        onClick = { tabIndex = index }
+                    )
+                } else if (tabTitles.isEmpty()) {
+                    Tab(
+                        icon = { Icon(filledTabIcons[index], null) },
+                        selected = tabIndex == index,
+                        onClick = { tabIndex = index }
+                    )
+                } else if (tabIcons.isEmpty()) {
+                    Tab(
+                        text = { Text(filledTabTitles[index]) },
+                        selected = tabIndex == index,
+                        onClick = { tabIndex = index }
+                    )
+                } else {
+                    Tab(
+                        text = { Text(filledTabTitles[index]) },
+                        icon = { Icon(filledTabIcons[index], null) },
+                        selected = tabIndex == index,
+                        onClick = { tabIndex = index }
+                    )
+                }
             }
         }
 
-        when (tabIndex) {
-            // Add screens as needed
-            0 -> MainScreen(viewModel, navController)
-            1 -> MainScreen(viewModel, navController)
-            2 -> MainScreen(viewModel, navController)
-        }
+        getTab(tabIndex)
     }
 }
 
@@ -316,7 +338,7 @@ PagerScreen(2) { page ->
  */
 
 @Composable
-fun PagerScreen(numPages: Int, getPage: @Composable (Int) -> Unit) {
+fun PagerScreen(numPages: Int, getPage: @Composable (page: Int) -> Unit) {
     val pagerState = rememberPagerState(pageCount = { numPages })
     HorizontalPager(state = pagerState) { page -> getPage(page) }
     PageIndicator(pagerState)
