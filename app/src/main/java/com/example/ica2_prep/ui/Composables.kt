@@ -305,18 +305,20 @@ fun TabScreen(viewModel: AppViewModel, navController: NavController) {
 
 /*
 // HorizontalPager with indicator
-PagerScreen(arrayOf<@Composable (Any) -> Unit>(
-    { Page1() },
-    { Page2(navController) },
-    // Add more pages here
-))
+PagerScreen(2) { page ->
+    when (page) {
+        0 -> { Page1() }
+        1 -> { Page2(navController) }
+        // Add more pages here
+    }
+}
 // And then define each page individually (see Onboarding.kt)
  */
 
 @Composable
-fun PagerScreen(pages: Array<@Composable (Any) -> Unit>) {
-    val pagerState = rememberPagerState(pageCount = { pages.size })
-    HorizontalPager(state = pagerState) { pages[it] }
+fun PagerScreen(numPages: Int, getPage: @Composable (Int) -> Unit) {
+    val pagerState = rememberPagerState(pageCount = { numPages })
+    HorizontalPager(state = pagerState) { page -> getPage(page) }
     PageIndicator(pagerState)
 }
 

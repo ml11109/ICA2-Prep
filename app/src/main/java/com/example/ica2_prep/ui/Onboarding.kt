@@ -21,13 +21,13 @@ import com.example.ica2_prep.R
 
 @Composable
 fun OnboardingScreen(navController: NavController) {
-    PagerScreen(
-        arrayOf<@Composable (Any) -> Unit>(
-            { Page1() },
-            { Page2(navController) },
+    PagerScreen(2) { page ->
+        when (page) {
+            0 -> { Page1() }
+            1 -> { Page2(navController) }
             // Add more pages here
-        )
-    )
+        }
+    }
 }
 
 @Composable
