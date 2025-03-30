@@ -1,8 +1,14 @@
 package com.example.ica2_prep.composables
 
+import android.app.DatePickerDialog
+import android.widget.DatePicker
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,6 +16,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import java.util.Calendar
 
 /*
 // AlertDialog with TextField
@@ -69,4 +77,32 @@ fun InputDialog(title: String, onValueSet: (String) -> Unit, onDismiss: () -> Un
             }
         }
     )
+}
+
+/*
+// Button that shows a date picker
+val calendar = Calendar.getInstance()
+
+DeadlineDatePicker(calendar) { _, year, month, day ->
+    calendar.set(year, month, day)
+}
+ */
+
+@Composable
+fun DeadlineDatePicker(calendar: Calendar, onDateSelect: (DatePicker, Int, Int, Int) -> Unit) {
+    val context = LocalContext.current
+
+    IconButton(
+        onClick = {
+            DatePickerDialog(
+                context,
+                onDateSelect,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+    ) {
+        Icon(Icons.Default.DateRange, "Date")
+    }
 }
